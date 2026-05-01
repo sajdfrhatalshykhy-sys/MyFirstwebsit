@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحذير</title>
-    <style>
-        body {
-            background-color: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            color: red;
-            font-size: 60px;
-            font-weight: bold;
-            text-align: center;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Matrix Numbers</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: black;
+    }
+    canvas {
+        display: block;
+    }
+</style>
 </head>
 <body>
-    <h1>الهكر ساجد يراقبك ههههه!!</h1>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// الأرقام (0 و 1)
+const numbers = "01";
+
+// حجم الخط
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+
+// مصفوفة لتحديد مكان النزول
+const drops = [];
+for (let i = 0; i < columns; i++) {
+    drops[i] = 1;
+}
+
+function draw() {
+    // خلفية شفافة قليلاً لعمل تأثير الحركة
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#0F0"; // أخضر
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = numbers[Math.floor(Math.random() * numbers.length)];
+        
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        // إعادة من الأعلى عشوائياً
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+}
+
+setInterval(draw, 33);
+
+// تحديث الحجم عند تغيير الشاشة
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
 </body>
 </html>
